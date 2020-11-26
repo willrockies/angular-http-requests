@@ -8,16 +8,16 @@ const routes: Routes = [
   },
   {
     path: 'cursos',
-    loadChildren: './cursos/cursos.module#CursosModule'
+    loadChildren: () => import('./cursos/cursos.module').then(m => m.CursosModule)
   },
   {
     path: 'rxjs-poc',
-    loadChildren: './unsubscribe-rxjs/unsubscribe-rxjs.module#UnsubscribeRxjsModule'
+    loadChildren: () => import('./unsubscribe-rxjs/unsubscribe-rxjs.module').then(m => m.UnsubscribeRxjsModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
