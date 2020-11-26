@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { map, switchMap } from 'rxjs/operators';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-cursos-form',
@@ -53,7 +54,6 @@ export class CursosFormComponent implements OnInit {
 
     const curso = this.route.snapshot.data['curso'];
 
-
     this.formulario = this.fb.group({
       id: [curso.id],
       nome: [curso.nome, [Validators.required, Validators.minLength(3), Validators.maxLength(250)]]
@@ -77,16 +77,47 @@ export class CursosFormComponent implements OnInit {
     console.log(this.formulario.value);
     if (this.formulario.valid) {
       console.log('submit');
-      this.service.create(this.formulario.value).subscribe(
+
+      let msgSucesso = 'Criado com sucesso';
+      let msgErro = 'Error ao criar curso, tente novamente';
+      if (this.formulario.value.id) {
+        msgSucesso = 'Atualizado com sucesso';
+        msgErro = 'Erro ao atualizar curso, tente novamente';
+      }
+
+      this.service.save(this.formulario.value).subscribe(
         success => {
-          this.modal.showAlertSuccess('criado com sucesso');
+          this.modal.showAlertSuccess(msgSucesso);
           this.location.back();
         },
-        error => this.modal.showAlertDanger('Error ao criar curso, tente novamente'),
-        () => console.log('request completo')
+        error => this.modal.showAlertDanger(msgErro)
       );
+
+
+      /*  if (this.formulario.value.id) {
+        //Update
+        this.service.update(this.formulario.value).subscribe(
+          success => {
+            this.modal.showAlertSuccess('Atualizado com sucesso');
+            this.location.back();
+          },
+          error => this.modal.showAlertDanger('Error ao atualizar curso, tente novamente'),
+          () => console.log('update completo')
+        );
+      } else {
+        this.service.create(this.formulario.value).subscribe(
+          success => {
+            this.modal.showAlertSuccess('Criado com sucesso');
+            this.location.back();
+          },
+          error => this.modal.showAlertDanger('Error ao criar curso, tente novamente'),
+          () => console.log('request completo')
+        );
+      } */
+
     }
   }
+
   onCancel() {
     this.submitted = false;
     this.formulario.reset();
