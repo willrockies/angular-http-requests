@@ -1,10 +1,6 @@
 {
   "cursos": [
     {
-      "nome": "Java",
-      "id": 2
-    },
-    {
       "nome": "Angular Material",
       "id": 3
     },
@@ -22,11 +18,7 @@
     },
     {
       "id": 7,
-      "nome": "CSS"
-    },
-    {
-      "id": 8,
-      "nome": "Python3"
+      "nome": "Python"
     }
   ]
 }
